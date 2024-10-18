@@ -15,7 +15,11 @@ The Examination Timetable Generator aims to create an efficient and fair timetab
 
 ### Team Members
 
-- 
+1	Susheeth G	20211ISR0036
+2	Ritish N	20211ISR0047 
+3	Vidyashree BN	20211ISR0039
+4	Mithali S Anand	20211ISR0082
+5	Tejashwini BA 	20211ISR0040 
 
 ### Deliverables
 
