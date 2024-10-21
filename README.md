@@ -24,3 +24,8 @@ The Examination Timetable Generator aims to create an efficient and fair timetab
 ### Deliverables
 
 The final output of this project will facilitate the smooth and fair conduct of examinations at Presidency University, ensuring that all relevant factors are considered in the scheduling process.
+
+
+### Project Timelie
+
+![Online Gantt 20241021 (3)](https://github.com/user-attachments/assets/d0165ac9-08dd-433b-8e9d-127a6ca78ced)
