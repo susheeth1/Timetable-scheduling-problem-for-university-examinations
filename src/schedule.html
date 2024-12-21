@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presidency University Exam Scheduler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('university-right-img-2.webp') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 135vh;
+        }
+
+        header {
+            width: 98%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header img {
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        header .header-buttons button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        header .header-buttons button:hover {
+            background-color: #002244;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            margin: 5px auto 2px;
+        }
+
+        h2 {
+            color: #033364;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #002244;
+        }
+
+        .time-input-container {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .time-input-container input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="LOGO_2-2.png" alt="Presidency University Logo">
+        <div class="header-buttons">
+            <button id="refreshButton" onclick="location.reload()">Refresh</button>
+        </div>
+    </header>
+
+    <!-- Create Schedule Section -->
+
+    <div class="container">
+        <h2>Create Exam Schedule</h2>
+        <form id="scheduleForm">
+            <label for="examType">Exam Type</label>
+            <select id="examType" name="examType" required>
+                <option value="">Select Type</option>
+                <option value="Midterm">Mid-term</option>
+                <option value="Endterm">End-term</option>
+            </select>
+
+            <div id="slotSelection" class="slots-container">
+                <label for="slots">Set Slot Timings</label>
+                <div id="slotInputs"></div>
+            </div>
+
+            <label for="examDate">Exam Date</label>
+            <input type="date" id="examDate" name="examDate" required>
+
+        </form>
+    </div>
+    
+
+    <!-- View/Export Section -->
+
+    <div class="container" style="display: none;" id="viewExportSection">
+        <h2>View/Export Timetable</h2>
+        <table id="scheduleTable">
+            <thead>
+                <tr>
+                    <th>Date & Slot</th>
+                    <th>Course</th>
+                    <th>Room Assignment</th>
+                    <th>Faculty Assigned</th>
+                    <th>Students Assigned</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamic rows will be populated here -->
+            </tbody>
+        </table>
+        <button id="exportPdf">Export to PDF</button>
+    </div>
+
+    <!-- Settings Section -->
+
+    <div class="container settings-form" style="display: none;" id="settingsSection">
+        <h2>Settings</h2>
+        <form id="settingsForm">
+            <label for="maxDailyExams">Max Daily Exams (Per Type)</label>
+            <input type="number" id="maxDailyExams" name="maxDailyExams" placeholder="Enter max daily exams">
+
+            <label for="facultyRest">Faculty Rest Period (Slots)</label>
+            <input type="number" id="facultyRest" name="facultyRest" placeholder="Enter rest period between duties">
+
+            <label for="slotDuration">Time Slot Duration (Minutes)</label>
+            <input type="number" id="slotDuration" name="slotDuration" placeholder="Enter slot duration">
+
+            <label for="defaultRoomCapacity">Default Room Capacity</label>
+            <input type="number" id="defaultRoomCapacity" name="defaultRoomCapacity" placeholder="Enter default room capacity">
+
+            <button type="submit">Save Settings</button>
+        </form>
+    </div>
+
+    <!-- CSV Files Section -->
+
+    <div class="container">
+        <h2>Upload CSV Files</h2>
+        <form>
+            <label for="invigilatorsList">Invigilators List (CSV)</label>
+            <input type="file" id="invigilatorsList" name="invigilatorsList" accept=".csv">
+
+            <label for="studentsList">Students List (CSV)</label>
+            <input type="file" id="studentsList" name="studentsList" accept=".csv">
+
+            <label for="coursesList">Courses List (CSV)</label>
+            <input type="file" id="coursesList" name="coursesList" accept=".csv">
+
+            <label for="RoomsList">Rooms List (CSV)</label>
+            <input type="file" id="RoomsList" name="RoomsList" accept=".csv">
+
+            <label for="ineligibleList">Ineligible List (CSV)</label>
+            <input type="file" id="ineligibleList" name="ineligibleList" accept=".csv">
+
+            <button type="submit">Generate Schedule</button>
+        </form>
+        <button onclick="window.history.back()" style="margin-top: 10px; padding: 10px; background-color: #003366; color: white; border: none; border-radius: 4px; cursor: pointer;">Back</button>
+    </div>
+    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Slot Input Logic
+            const examTypeField = document.getElementById("examType");
+            const slotInputsContainer = document.getElementById("slotInputs");
+            const slotCounts = { Midterm: 3, Endterm: 2 };
+
+            examTypeField.addEventListener("change", () => {
+                slotInputsContainer.innerHTML = ""; // Clear previous slots
+                const selectedType = examTypeField.value;
+
+                if (slotCounts[selectedType]) {
+                    for (let i = 1; i <= slotCounts[selectedType]; i++) {
+                        const div = document.createElement("div");
+                        div.className = "time-input-container";
+
+                        const label = document.createElement("label");
+                        label.textContent = `Slot ${i} Timing:`;
+
+                        const input = document.createElement("input");
+                        input.type = "time";
+                        input.name = `slot${i}`;
+                        input.required = true;
+
+                        div.appendChild(label);
+                        div.appendChild(input);
+                        slotInputsContainer.appendChild(div);
+                    }
+                }
+            });
+
+            // CSV File Validation
+            const csvInputs = document.querySelectorAll("input[type='file']");
+
+            csvInputs.forEach(input => {
+                input.addEventListener("change", () => {
+                    const file = input.files[0];
+                    if (file && file.name.split(".").pop().toLowerCase() !== "csv") {
+                        alert("Invalid file format. Please upload a CSV file.");
+                        input.value = "";
+                    }
+                });
+            });
+
+            // Export to PDF Logic
+            const exportPdfButton = document.getElementById("exportPdf");
+            if (exportPdfButton) {
+                exportPdfButton.addEventListener("click", () => {
+                    const table = document.getElementById("scheduleTable");
+                    const rows = table.querySelectorAll("tr");
+                    if (rows.length <= 1) {
+                        alert("No data available to export.");
+                        return;
+                    }
+                    const doc = new jsPDF();
+                    doc.text("Exam Schedule", 20, 20);
+                    doc.autoTable({ html: "#scheduleTable" });
+                    doc.save("exam-schedule.pdf");
+                });
+            }
+
+            // Settings Form Logic
+            const settingsForm = document.getElementById("settingsForm");
+            if (settingsForm) {
+                settingsForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+
+                    const settingsData = {
+                        maxDailyExams: settingsForm.maxDailyExams.value,
+                        facultyRest: settingsForm.facultyRest.value,
+                        slotDuration: settingsForm.slotDuration.value,
+                        defaultRoomCapacity: settingsForm.defaultRoomCapacity.value
+                    };
+
+                    console.log("Settings Saved:", settingsData);
+                    alert("Settings saved successfully!");
+                });
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+    const invigilatorsInput = document.getElementById("invigilatorsList");
+    const studentsInput = document.getElementById("studentsList");
+    const coursesInput = document.getElementById("coursesList");
+    const roomsInput = document.getElementById("RoomsList");
+    const ineligibleInput = document.getElementById("ineligibleList");
+
+    // File validation function
+    function validateCSVFile(inputElement) {
+        const file = inputElement.files[0];
+        if (file) {
+            const fileName = file.name;
+            const fileExtension = fileName.split(".").pop().toLowerCase();
+
+            if (fileExtension !== "csv") {
+                alert("Invalid file format. Please upload a CSV file.");
+                inputElement.value = ""; // Clear the file input
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Attach event listeners to each input field
+    [invigilatorsInput, studentsInput, coursesInput, roomsInput, ineligibleInput].forEach(input => {
+        input.addEventListener("change", function () {
+            if (validateCSVFile(this)) {
+                console.log(`${this.id} file selected:`, this.files[0]);
+            }
+        });
+    });
+
+    // Example for sending files to the backend (if needed)
+    async function uploadFile(inputElement) {
+        const file = inputElement.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append(inputElement.name, file);
+
+            try {
+                const response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    alert(`${inputElement.name} uploaded successfully!`);
+                } else {
+                    alert(`Failed to upload ${inputElement.name}.`);
+                }
+            } catch (error) {
+                console.error("Error uploading file:", error);
+                alert(`An error occurred while uploading ${inputElement.name}.`);
+            }
+        }
+    }
+});
+    </script>
+</body>
+</html>

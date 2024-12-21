@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presidency University Exam Scheduler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('university-right-img-2.webp') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
+            width: 98%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header img {
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        header .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        header .header-buttons button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        header .header-buttons button:hover {
+            background-color: #002244;
+        }
+
+        nav {
+            background-color: #03264a;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            margin: 80px auto 20px; /* Add margin to account for fixed header */
+        }
+
+        h2 {
+            color: #033364;
+            text-align: center;
+        }
+
+        h1 {
+            position: relative;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(245, 244, 249, 0.5); /* Transparent background */
+            color: #003366;
+            padding: 1rem 2rem;
+            display: flex;
+            margin: 0;
+            border-radius: 10px;
+            font-size: 1.8rem;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #002244;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .flex-container button {
+            flex: 1;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="/Users/ritish/Downloads/LOGO_2-2.png" alt="Presidency University Logo">
+        <div class="header-buttons">
+            <button id="signInButton">Sign In</button>
+            <button id="refreshButton" onclick="location.reload()">Refresh</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section id="login-section" class="container">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <div class="error-message" id="errorMessage">Invalid username or password.</div>
+            </form>
+
+            <div class="flex-container">
+                <button id="changePasswordButton">Change Password</button>
+                <button id="forgotPasswordButton">Forgot Password</button>
+            </div>
+        </section>
+
+        <section id="change-password-section" class="container" style="display:none;">
+            <h2>Change Password</h2>
+            <form id="changePasswordForm">
+                <label for="currentPassword">Current Password</label>
+                <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password" required>
+
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password" required>
+
+                <label for="confirmNewPassword">Confirm New Password</label>
+                <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Confirm new password" required>
+
+                <div class="flex-container">
+                    <button type="submit">Update Password</button>
+                    <button type="button" id="backToLoginButton">Back</button>
+                </div>
+                <div class="error-message" id="passwordErrorMessage">Passwords do not match or incorrect current password.</div>
+            </form>
+        </section>
+
+        <section id="forgot-password-section" class="container" style="display:none;">
+            <h2>Forgot Password</h2>
+            <form id="forgotPasswordForm">
+                <label for="nameForRecovery">Enter Name</label>
+                <input type="name" id="nameForRecovery" name="nameForRecovery" placeholder="Enter your name" required>
+
+                <button type="submit">Retrieve Password</button>
+                <button type="button" id="backToLoginFromForgot">Back</button>
+                <div class="error-message" id="recoveryErrorMessage">Invalid email or recovery failed.</div>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const validUsers = [
+            { email: "admin", password: "admin123" },
+            { email: "faculty", password: "faculty2024" },
+        ];
+
+        const loginForm = document.getElementById("loginForm");
+        const changePasswordButton = document.getElementById("changePasswordButton");
+        const forgotPasswordButton = document.getElementById("forgotPasswordButton");
+        const changePasswordSection = document.getElementById("change-password-section");
+        const forgotPasswordSection = document.getElementById("forgot-password-section");
+        const backToLoginButton = document.getElementById("backToLoginButton");
+        const backToLoginFromForgot = document.getElementById("backToLoginFromForgot");
+        const errorMessage = document.getElementById("errorMessage");
+        const loginSection = document.getElementById("login-section");
+        const createScheduleSection = document.getElementById("create-schedule");
+        const viewExportSection = document.getElementById("view-export");
+        const settingsSection = document.getElementById("settings");
+
+        loginForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const name = document.getElementById("name").value;
+            const password = document.getElementById("password").value;
+
+            const isValidUser = validUsers.some(
+                (user) => user.name === name && user.password === password
+            );
+
+            if (isValidUser) {
+                loginSection.style.display = "none";
+                createScheduleSection.style.display = "block";
+            } else {
+                errorMessage.style.display = "block";
+            }
+        });
+
+        changePasswordButton.addEventListener("click", function() {
+            loginSection.style.display = "none";
+            changePasswordSection.style.display = "block";
+        });
+
+        backToLoginButton.addEventListener("click", function() {
+            changePasswordSection.style.display = "none";
+            loginSection.style.display = "block";
+        });
+
+        forgotPasswordButton.addEventListener("click", function() {
+            loginSection.style.display = "none";
+            forgotPasswordSection.style.display = "block";
+        });
+
+        backToLoginFromForgot.addEventListener("click", function() {
+            forgotPasswordSection.style.display = "none";
+            loginSection.style.display = "block";
+        });
+
+        const changePasswordForm = document.getElementById("changePasswordForm");
+        const forgotPasswordForm = document.getElementById("forgotPasswordForm");
+        const passwordErrorMessage = document.getElementById("passwordErrorMessage");
+        const recoveryErrorMessage = document.getElementById("recoveryErrorMessage");
+
+        changePasswordForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const currentPassword = document.getElementById("currentPassword").value;
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmNewPassword = document.getElementById("confirmNewPassword").value;
+
+            const currentUser = validUsers.find(
+                (user) => user.name === "admin" // Replace with dynamic logic for current logged-in user
+            );
+
+            if (currentUser && currentPassword === currentUser.password) {
+                if (newPassword === confirmNewPassword) {
+                    currentUser.password = newPassword;
+                    passwordErrorMessage.style.display = "none";
+                    loginSection.style.display = "block";
+                    changePasswordSection.style.display = "none";
+                } else {
+                    passwordErrorMessage.textContent = "New passwords do not match.";
+                    passwordErrorMessage.style.display = "block";
+                }
+            } else {
+                passwordErrorMessage.textContent = "Current password is incorrect.";
+                passwordErrorMessage.style.display = "block";
+            }
+        });
+
+        forgotPasswordForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const nameForRecovery = document.getElementById("nameForRecovery").value;
+
+            const user = validUsers.find(
+                (user) => user.name === nameForRecovery
+            );
+
+            if (user) {
+                alert(`Password for ${user.name} is: ${user.password}`);
+                forgotPasswordSection.style.display = "none";
+                loginSection.style.display = "block";
+                recoveryErrorMessage.style.display = "none";
+            } else {
+                recoveryErrorMessage.textContent = "Invalid name or recovery failed.";
+                recoveryErrorMessage.style.display = "block";
+            }
+        });
+
+        const scheduleForm = document.getElementById('scheduleForm');
+        const scheduleTable = document.querySelector('#scheduleTable tbody');
+        const exportPdfButton = document.getElementById('exportPdf');
+
+        scheduleForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Schedule generation in progress.');
+        });
+
+        exportPdfButton.addEventListener('click', function() {
+            alert('Exporting timetable to PDF.');
+        });
+    </script>
+</body>
+</html>
