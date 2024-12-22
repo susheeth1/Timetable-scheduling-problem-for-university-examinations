@@ -1,6 +1,16 @@
 # Presidency University Exam Scheduler
 
 A comprehensive web-based application to facilitate the scheduling of exams, invigilators, and room assignments for Presidency University. This project leverages **genetic algorithms** for optimal scheduling while providing an easy-to-use web interface for data upload and results retrieval.
+---
+
+### Team Members
+| Sl. No. | Roll Number     | Student Name        |
+|---------|-----------------|---------------------|
+| 1       | 20211ISR0036    | Susheeth G          |
+| 2       | 20211ISR0047    | Ritish N            |
+| 3       | 20211ISR0039    | Vidyashree BN       |
+| 4       | 20211ISR0082    | Mithali S Anand     |
+| 5       | 20211ISR0040    | Tejashwini BA       |
 
 ---
 
@@ -34,14 +44,6 @@ A comprehensive web-based application to facilitate the scheduling of exams, inv
 - Required Python libraries:
   
 ---
-
-### Team Members
-
--1	Susheeth G	20211ISR0036.
--2	Ritish N	20211ISR0047.
--3	Vidyashree BN	20211ISR0039.
--4	Mithali S Anand	20211ISR0082.
--5	Tejashwini BA 	20211ISR0040.
 
 ### Deliverables
 
