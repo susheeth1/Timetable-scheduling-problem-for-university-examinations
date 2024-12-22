@@ -32,7 +32,7 @@ A comprehensive web-based application to facilitate the scheduling of exams, inv
 ### Prerequisites
 - Python 3.8 or higher installed.
 - Required Python libraries:
-- 
+  
 ---
 
 ### Team Members
