@@ -48,8 +48,6 @@ The final output of this project will facilitate the smooth and fair conduct of 
 ##Output Screenshot
 ![1](https://github.com/user-attachments/assets/ccdb7b48-c904-44a7-a7d6-831f38974422)
 
-![2](https://github.com/user-attachments/assets/e6e4c76c-bfdb-4d91-b4e7-05af12ddc9f3)
-
 ![2](https://github.com/user-attachments/assets/9ff51d3a-2a99-45a4-b16f-d1de54b863b0)
 
 ![3](https://github.com/user-attachments/assets/a8ee4d34-6c59-4491-bfa3-d8a4ec1a8834)
