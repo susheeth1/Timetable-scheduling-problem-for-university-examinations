@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presidency University Exam Scheduler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('university-right-img-2.webp') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
+            width: 98%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header img {
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        header .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        header .header-buttons button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        header .header-buttons button:hover {
+            background-color: #002244;
+        }
+
+        nav {
+            background-color: #03264a;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            margin: 80px auto 20px; /* Add margin to account for fixed header */
+        }
+
+        h2 {
+            color: #033364;
+            text-align: center;
+        }
+
+        h1 {
+            position: relative;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(245, 244, 249, 0.5); /* Transparent background */
+            color: #003366;
+            padding: 1rem 2rem;
+            display: flex;
+            margin: 0;
+            border-radius: 10px;
+            font-size: 1.8rem;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #002244;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .flex-container button {
+            flex: 1;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="/Users/ritish/Downloads/LOGO_2-2.png" alt="Presidency University Logo">
+        <div class="header-buttons">
+            <button id="refreshButton" onclick="location.reload()">Refresh</button>
+        </div>
+    </header>
+
+    <!-- CSV Files Section -->
+
+    <div class="container">
+        <h2>Upload CSV Files</h2>
+        <form>
+            <label for="invigilatorsList">Invigilators List (CSV)</label>
+            <input type="file" id="invigilatorsList" name="invigilatorsList" accept=".csv">
+
+            <label for="studentsList">Students List (CSV)</label>
+            <input type="file" id="studentsList" name="studentsList" accept=".csv">
+
+            <label for="coursesList">Courses List (CSV)</label>
+            <input type="file" id="coursesList" name="coursesList" accept=".csv">
+
+            <label for="RoomsList">Rooms List (CSV)</label>
+            <input type="file" id="RoomsList" name="RoomsList" accept=".csv">
+
+            <label for="ineligibleList">Ineligible List (CSV)</label>
+            <input type="file" id="ineligibleList" name="ineligibleList" accept=".csv">
+
+            <button type="submit">Generate Schedule</button>
+        </form>
+        <button onclick="window.history.back()" style="margin-top: 10px; padding: 10px; background-color: #003366; color: white; border: none; border-radius: 4px; cursor: pointer;">Back</button>
+    </div>
+</body>
+</html>
+
+<script> 
+    document.addEventListener("DOMContentLoaded", function () {
+    const invigilatorsInput = document.getElementById("invigilatorsList");
+    const studentsInput = document.getElementById("studentsList");
+    const coursesInput = document.getElementById("coursesList");
+    const roomsInput = document.getElementById("RoomsList");
+    const ineligibleInput = document.getElementById("ineligibleList");
+
+    // File validation function
+    function validateCSVFile(inputElement) {
+        const file = inputElement.files[0];
+        if (file) {
+            const fileName = file.name;
+            const fileExtension = fileName.split(".").pop().toLowerCase();
+
+            if (fileExtension !== "csv") {
+                alert("Invalid file format. Please upload a CSV file.");
+                inputElement.value = ""; // Clear the file input
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Attach event listeners to each input field
+    [invigilatorsInput, studentsInput, coursesInput, roomsInput, ineligibleInput].forEach(input => {
+        input.addEventListener("change", function () {
+            if (validateCSVFile(this)) {
+                console.log(`${this.id} file selected:`, this.files[0]);
+            }
+        });
+    });
+
+    // Example for sending files to the backend (if needed)
+    async function uploadFile(inputElement) {
+        const file = inputElement.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append(inputElement.name, file);
+
+            try {
+                const response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    alert(`${inputElement.name} uploaded successfully!`);
+                } else {
+                    alert(`Failed to upload ${inputElement.name}.`);
+                }
+            } catch (error) {
+                console.error("Error uploading file:", error);
+                alert(`An error occurred while uploading ${inputElement.name}.`);
+            }
+        }
+    }
+
+    // Example for integrating the upload function
+    // Uncomment the below code to automatically upload files when selected
+    /*
+    [invigilatorsInput, studentsInput, coursesInput, roomsInput, ineligibleInput].forEach(input => {
+        input.addEventListener("change", function () {
+            if (validateCSVFile(this)) {
+                uploadFile(this);
+            }
+        });
+    });
+    */
+});
+</script>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download and View Generated PDFs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='assets/bag2.webp') }}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            position: relative;
+            top: -2cm;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .container h1 {
+            color: #003366;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #e8f0ff;
+            border: 1px solid #d0e0ff;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #003366;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #002244;
+        }
+
+        .btn-group a {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="main-title">The Exam Schedule Has Been Generated</h1>
+    <div class="container">
+        <h1>View or Download Generated PDF Files</h1>
+        <ul>
+            {% for file in files %}
+                <li>
+                    <span>{{ file }}</span>
+                    <div class="btn-group">
+                        <a href="{{ url_for('view_file', filename=file) }}">View</a>
+                        <a href="{{ url_for('download_file', filename=file) }}">Download</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        {% if not files %}
+            <p>No generated files available. Please generate a schedule first.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Exam Schedule Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url("{{ url_for('static', filename='assets/bag2.webp') }}") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            min-height: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #003366;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            margin-top: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #002244;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Exam Schedule Data</h2>
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <!-- Exam Type Selection -->
+            <label for="examType">Exam Type</label>
+            <select id="examType" name="examType" required>
+                <option value="">Select Exam Type</option>
+                <option value="midterm">Midterm</option>
+                <option value="endterm">Endterm</option>
+            </select>
+
+            <!-- Exam Start Date -->
+            <label for="examDate">Exam Start Date</label>
+            <input type="date" id="examDate" name="examDate" required>
+
+            <!-- File Uploads -->
+            <label for="RoomsList">Rooms List (CSV)</label>
+            <input type="file" id="RoomsList" name="RoomsList" accept=".csv" required>
+
+            <label for="invigilatorsList">Invigilators List (CSV)</label>
+            <input type="file" id="invigilatorsList" name="invigilatorsList" accept=".csv" required>
+
+            <label for="studentsList">Students List (CSV)</label>
+            <input type="file" id="studentsList" name="studentsList" accept=".csv" required>
+
+            <label for="coursesList">Courses List (CSV)</label>
+            <input type="file" id="coursesList" name="coursesList" accept=".csv" required>
+
+            <label for="ineligibleList">Ineligible Students List (CSV)</label>
+            <input type="file" id="ineligibleList" name="ineligibleList" accept=".csv" required>
+
+            <!-- Submit Button -->
+            <button type="submit">Generate Schedule</button>
+        </form>
+    </div>
+</body>
+</html>

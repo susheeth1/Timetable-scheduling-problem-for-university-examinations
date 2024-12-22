@@ -1,0 +1,4 @@
+Flask==2.3.2
+Werkzeug==2.3.4
+fpdf==1.7.2
+numpy==1.26.0
