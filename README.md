@@ -29,6 +29,12 @@ A comprehensive web-based application to facilitate the scheduling of exams, inv
 
 ---
 
+### Prerequisites
+- Python 3.8 or higher installed.
+- Required Python libraries:
+- 
+---
+
 ### Team Members
 
 -1	Susheeth G	20211ISR0036.
@@ -40,6 +46,20 @@ A comprehensive web-based application to facilitate the scheduling of exams, inv
 ### Deliverables
 
 The final output of this project will facilitate the smooth and fair conduct of examinations at Presidency University, ensuring that all relevant factors are considered in the scheduling process.
+
+
+### Setup Instructions
+1. **Clone the Repository**:
+git clone https://github.com/your-username/university-exam-scheduler.git
+cd university-exam-scheduler
+
+2. **Install Dependencies**:
+Install all required Python libraries using:
+
+
+3. **Run the Application**:
+pip install -r requirements.txt
+python app.py
 
 
 ### Project Timelie
