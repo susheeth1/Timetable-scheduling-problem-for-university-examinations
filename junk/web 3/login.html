@@ -1,0 +1,239 @@
+DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presidency University Exam Scheduler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('university-right-img-2.webp') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
+            width: 98%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h2 {
+            color: #033364;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, button {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #002244;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-container button {
+            flex: 1;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="/path/to/logo.png" alt="Presidency University Logo">
+    </header>
+
+    <main>
+        <section id="login-section" class="container">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <div class="error-message" id="errorMessage">Invalid username or password.</div>
+            </form>
+        </section>
+
+        <section id="change-password-section" class="container" style="display:none;">
+            <h2>Change Password</h2>
+            <form id="changePasswordForm">
+                <input type="password" id="currentPassword" name="currentPassword" placeholder="Current Password" required>
+                <input type="password" id="newPassword" name="newPassword" placeholder="New Password" required>
+                <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Confirm New Password" required>
+                <button type="submit">Update Password</button>
+                <button type="button" id="backToLoginButton">Back</button>
+                <div class="error-message" id="passwordErrorMessage">Error updating password. Please try again.</div>
+            </form>
+        </section>
+
+        <section id="forgot-password-section" class="container" style="display:none;">
+            <h2>Forgot Password</h2>
+            <form id="forgotPasswordForm">
+                <input type="text" id="nameForRecovery" name="nameForRecovery" placeholder="Username" required>
+                <button type="submit">Retrieve Password</button>
+                <button type="button" id="backToLoginFromForgot">Back</button>
+                <div class="error-message" id="recoveryErrorMessage">Error retrieving password. Please try again.</div>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const changePasswordForm = document.getElementById("changePasswordForm");
+        const forgotPasswordForm = document.getElementById("forgotPasswordForm");
+        const errorMessage = document.getElementById("errorMessage");
+        const passwordErrorMessage = document.getElementById("passwordErrorMessage");
+        const recoveryErrorMessage = document.getElementById("recoveryErrorMessage");
+
+        // Login Form Submission
+        loginForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const response = await fetch("/api/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    window.location.href = "/dashboard"; // Redirect to dashboard
+                } else {
+                    errorMessage.style.display = "block";
+                    errorMessage.textContent = "Invalid username or password.";
+                }
+            } catch (error) {
+                errorMessage.style.display = "block";
+                errorMessage.textContent = "An error occurred. Please try again.";
+            }
+        });
+
+        // Change Password Form Submission
+        changePasswordForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            const currentPassword = document.getElementById("currentPassword").value;
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmNewPassword = document.getElementById("confirmNewPassword").value;
+
+            if (newPassword !== confirmNewPassword) {
+                passwordErrorMessage.style.display = "block";
+                passwordErrorMessage.textContent = "Passwords do not match.";
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/change-password", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+
+                if (response.ok) {
+                    alert("Password updated successfully!");
+                    window.location.href = "/login"; // Redirect to login page
+                } else {
+                    passwordErrorMessage.style.display = "block";
+                    passwordErrorMessage.textContent = "Error updating password.";
+                }
+            } catch (error) {
+                passwordErrorMessage.style.display = "block";
+                passwordErrorMessage.textContent = "An error occurred. Please try again.";
+            }
+        });
+
+        // Forgot Password Form Submission
+        forgotPasswordForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            const nameForRecovery = document.getElementById("nameForRecovery").value;
+
+            try {
+                const response = await fetch("/api/recover-password", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: nameForRecovery })
+                });
+
+                if (response.ok) {
+                    alert("Recovery email sent successfully!");
+                    window.location.href = "/login"; // Redirect to login page
+                } else {
+                    recoveryErrorMessage.style.display = "block";
+                    recoveryErrorMessage.textContent = "Error retrieving password.";
+                }
+            } catch (error) {
+                recoveryErrorMessage.style.display = "block";
+                recoveryErrorMessage.textContent = "An error occurred. Please try again.";
+            }
+        });
+
+        // Navigation Between Sections
+        document.getElementById("backToLoginButton").addEventListener("click", function () {
+            document.getElementById("change-password-section").style.display = "none";
+            document.getElementById("login-section").style.display = "block";
+        });
+
+        document.getElementById("backToLoginFromForgot").addEventListener("click", function () {
+            document.getElementById("forgot-password-section").style.display = "none";
+            document.getElementById("login-section").style.display = "block";
+        });
+    </script>
+</body>
+</html>

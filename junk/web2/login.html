@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presidency University Exam Scheduler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('university-right-img-2.webp') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            margin: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 {
+            color: #033364;
+            text-align: center;
+        }
+
+        input, button {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #002244;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Presidency University Exam Scheduler</h1>
+    </header>
+    <main>
+        <section class="container">
+            <h2>Login</h2>
+            <form id="loginForm" method="POST" action="/">
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <div class="error-message" id="errorMessage">Invalid username or password.</div>
+            </form>
+        </section>
+    </main>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Simulating server-side validation for now
+            const validUsers = [
+                { username: "admin", password: "admin123" },
+                { username: "faculty", password: "faculty2024" }
+            ];
+
+            const isValidUser = validUsers.some(
+                user => user.username === username && user.password === password
+            );
+
+            if (!isValidUser) {
+                event.preventDefault();
+                document.getElementById("errorMessage").style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>
+
