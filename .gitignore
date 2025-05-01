@@ -1,3 +1,26 @@
-junk/
+# Python
+__pycache__/
+*.py[cod]
+*.pkl
+*.log
+*.sqlite3
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment
+.env
+.venv/
 env/
 venv/
+
+# VS Code
+.vscode/
+
+# System
+.DS_Store
+Thumbs.db
+junk/
+# Temporary files
+junk/
+Literature/
